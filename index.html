@@ -1,1 +1,526 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CricTactix Pro | Elite IPL Coaching Simulator</title>
+    <!-- Google Fonts & Material Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- CricketData.org Live Widget -->
+    <script src="https://cdorgapi.b-cdn.net/widgets/matchlist.js"></script>
+</head>
+<body class="pro-mode">
+    
+    <!-- Top App Bar -->
+    <header class="app-bar">
+        <div class="brand">
+            <span class="material-icons-round brand-icon">precision_manufacturing</span>
+            <h1>CricTactix <span>PRO</span></h1>
+        </div>
+        <div class="header-center">
+            <div class="mini-header-banner">
+                <img src="banner.png" alt="GT vs SRH">
+                <div class="banner-glass-overlay">
+                    <span class="teams">GT vs SRH</span>
+                    <span class="divider">|</span>
+                    <span class="live-score-mini" id="liveScoreHeader">29/3</span>
+                    <span class="live-over-mini" id="liveOverHeader">(4.0)</span>
+                    <div class="mini-momentum">
+                        <div class="m-fill gt" style="width: 75%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="user-controls">
+            <div class="level-chip">
+                <small>LVL</small>
+                <span>12</span>
+            </div>
+            <div class="merit-chip">
+                <span class="material-icons-round">stars</span>
+                <span id="globalScore">2,450</span>
+            </div>
+            <div class="profile-container">
+                <img src="https://ui-avatars.com/api/?name=Aryan&background=1a73e8&color=fff" alt="User" class="avatar">
+                <div class="online-status"></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="pro-layout">
+        
+        <!-- LEFT: INTELLIGENCE HUB -->
+        <aside class="intel-panel">
+            <!-- Live Match Stats -->
+            <div class="material-card stats-card">
+                <div class="card-header">
+                    <span class="material-icons-round">query_stats</span>
+                    <h3>Intelligence Hub</h3>
+                </div>
+                <!-- Smart Series Search (New) -->
+                <div class="search-container mb-3">
+                    <div class="search-box">
+                        <span class="material-icons-round">search</span>
+                        <input type="text" id="seriesSearch" placeholder="Search Series (e.g. IPL)...">
+                    </div>
+                </div>
+                <div class="score-display">
+                    <div class="main-score" id="liveScore">129<small>/4</small></div>
+                    <div class="target-info" id="matchStatus">GT is batting first | Projected: 165</div>
+                </div>
+                <div class="mini-metrics">
+                    <div class="metric"><span>CRR</span><strong>9.44</strong></div>
+                    <div class="metric"><span>RRR</span><strong>15.50</strong></div>
+                    <div class="metric"><span>WIN %</span><strong class="text-blue" id="winProbText">48%</strong></div>
+                </div>
+            </div>
+
+            <!-- Live Win Probability Gauge (New) -->
+            <div class="material-card win-prob-card mt-3">
+                <div class="card-header">
+                    <span class="material-icons-round">analytics</span>
+                    <h3>Win Probability</h3>
+                </div>
+                <div class="gauge-container">
+                    <div class="gauge">
+                        <div class="gauge-fill" id="winGaugeFill"></div>
+                        <div class="gauge-cover"></div>
+                    </div>
+                    <div class="gauge-labels">
+                        <span>GT</span>
+                        <span>SRH</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Fan Sentiment (Fake Poll) -->
+            <div class="material-card poll-card mt-3">
+                <div class="card-header">
+                    <span class="material-icons-round">how_to_vote</span>
+                    <h3>Live Global Sentiment</h3>
+                </div>
+                <div class="poll-body">
+                    <div class="poll-stat">
+                        <span>GUJARAT TITANS</span>
+                        <span class="text-blue">92%</span>
+                    </div>
+                    <div class="poll-progress">
+                        <div class="poll-fill gt" style="width: 92%;"></div>
+                    </div>
+                    <div class="poll-stat mt-2">
+                        <span>SRH</span>
+                        <span class="text-red">8%</span>
+                    </div>
+                    <div class="poll-progress">
+                        <div class="poll-fill srh" style="width: 8%;"></div>
+                    </div>
+                    <p class="poll-meta">🔥 2.4M Fans predicted GT Victory</p>
+                </div>
+            </div>
+
+            <!-- Weather & Pitch Widget -->
+            <div class="material-card weather-card mt-3">
+                <div class="card-header">
+                    <span class="material-icons-round">wb_sunny</span>
+                    <h3>Environment</h3>
+                </div>
+                <div class="env-row">
+                    <div class="env-item">
+                        <small>PITCH</small>
+                        <strong>Dry / Flat</strong>
+                    </div>
+                    <div class="env-item">
+                        <small>HUMIDITY</small>
+                        <strong>65% (Dew)</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Matchup Data (New) -->
+            <div class="material-card matchup-card">
+                <div class="card-header">
+                    <span class="material-icons-round">psychology</span>
+                    <h3>Batter Matchups</h3>
+                </div>
+                <div class="matchup-row">
+                    <div class="player">H. Klaasen</div>
+                    <div class="vs-stat">vs Rashid</div>
+                    <div class="stat-val text-red">95.4 SR</div>
+                </div>
+                <div class="matchup-row">
+                    <div class="player">H. Klaasen</div>
+                    <div class="vs-stat">vs Pace</div>
+                    <div class="stat-val text-green">210.2 SR</div>
+                </div>
+            </div>
+            
+            <div class="material-card radar-card mt-3">
+                <div class="radar-container">
+                    <canvas id="tacticalRadar"></canvas>
+                </div>
+                <div class="pitch-container">
+                    <div class="pitch-visual">
+                        <div class="stumps"></div>
+                        <div id="userPitchSpot" class="pitch-spot user"></div>
+                        <div id="capPitchSpot" class="pitch-spot captain"></div>
+                    </div>
+                    <div class="pitch-legend">
+                        <span><b class="user"></b> Your Length</span>
+                        <span><b class="captain"></b> Captain</span>
+                    </div>
+                </div>
+                <div class="terminal-container">
+                    <div class="terminal-header">
+                        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                        <span class="terminal-title">Neural Tactical Analysis</span>
+                    </div>
+                    <div id="terminalOutput" class="terminal-body">
+                        <!-- Merits generated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wagon Wheel Mockup -->
+            <!-- Today's Match Center (New) -->
+            <div class="material-card match-center-card mt-3">
+                <div class="card-header">
+                    <span class="material-icons-round">tournament</span>
+                    <h3>Match Center</h3>
+                </div>
+                <div class="match-list" id="globalMatchList">
+                    <div class="match-item active">GT vs SRH, IPL 2026 (Live)</div>
+                    <div class="match-item">GT vs SRH, May 2025 (Last Game)</div>
+                    <div class="match-item">GT vs SRH, Head-to-Head Stats</div>
+                </div>
+                <div class="live-ticker mt-3">
+                    <div class="ticker-text">GT 129-4 (16.5) | Sai Sudharsan 45* (32) | Pat Cummins 2-18 (3.0)</div>
+                </div>
+            </div>
+
+            <!-- ULTIMATE GLOBAL LIVE HUB (New) -->
+            <div class="material-card live-hub-card mt-3">
+                <div class="card-header">
+                    <span class="material-icons-round">live_tv</span>
+                    <h3>Global Live Scoreboard</h3>
+                </div>
+                <div id="masterScoreboard" class="scoreboard-master-grid">
+                    <!-- Dynamic Scorecards here -->
+                    <div class="hub-placeholder">Synchronizing Global Feeds...</div>
+                </div>
+            </div>
+
+            <!-- Global Live Feed Widget -->
+            <div class="material-card widget-card mt-3">
+                <div class="card-header">
+                    <span class="material-icons-round">language</span>
+                    <h3>Global Live Feed</h3>
+                </div>
+                <div id="cricket-match-list"></div> 
+            </div>
+
+            <div class="material-card player-bio-card mt-3">
+                <div class="card-header">
+                    <span class="material-icons-round">account_circle</span>
+                    <h3>Scout Report: <span id="bioName">Rashid Khan</span></h3>
+                </div>
+                <div class="career-summary">
+                    <!-- ... -->
+                </div>
+            </div>
+
+            <!-- Live Commentary Stream (New) -->
+            <div class="material-card comms-card mt-3">
+                <div class="card-header">
+                    <span class="material-icons-round">comment</span>
+                    <h3>Live Commentary</h3>
+                </div>
+                <div class="comms-stream" id="liveComms">
+                    <div class="comm-item">Welcome to the Live Tactical Hub for GT vs SRH.</div>
+                    <div class="comm-item">Waiting for next ball update from Ahmedabad...</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CENTER: THE COMMAND CENTER -->
+        <section class="command-panel">
+            <!-- 2D Field Visualization (Highly Creative Addition) -->
+            <div class="material-card field-viz-card">
+                <div class="field-header">
+                    <div class="title-group">
+                        <h2>Tactical Deployment</h2>
+                        <p>Over 19.0 | Death Overs</p>
+                    </div>
+                    <div class="pressure-meter">
+                        <label>MATCH PRESSURE</label>
+                        <div class="meter-bar"><div class="fill" style="width: 92%"></div></div>
+                    </div>
+                </div>
+
+                <div class="visual-field" id="cricketField">
+                    <!-- The Field UI -->
+                    <div class="boundary-ring"></div>
+                    <div class="pitch-area"></div>
+                    <!-- Fielder Icons -->
+                    <div class="fielder" style="top: 20%; left: 30%;" data-name="Slip"></div>
+                    <div class="fielder" style="top: 15%; left: 50%;" data-name="Long On"></div>
+                    <div class="fielder" style="top: 85%; left: 50%;" data-name="Long Off"></div>
+                    <div class="fielder" style="top: 50%; left: 10%;" data-name="Mid Wicket"></div>
+                    <div class="fielder" style="top: 50%; left: 90%;" data-name="Point"></div>
+                    <div class="fielder" style="top: 30%; left: 70%;" data-name="Fine Leg"></div>
+                    <div class="fielder" style="top: 70%; left: 30%;" data-name="Square Leg"></div>
+                    <div class="fielder" style="top: 30%; left: 15%;" data-name="Third Man"></div>
+                    <div class="fielder active-fielder" style="top: 60%; left: 80%;" data-name="Extra Cover"></div>
+                </div>
+
+                <div class="field-controls">
+                    <button class="field-preset active" data-preset="balanced">Balanced</button>
+                    <button class="field-preset" data-preset="attacking">Attacking</button>
+                    <button class="field-preset" data-preset="defensive">Death Overs</button>
+                </div>
+            </div>
+
+            <!-- Decision Form -->
+            <div class="material-card decision-engine mt-3" id="decisionEngine">
+                <div class="engine-tabs">
+                    <button class="tab active" data-target="personnel">Personnel</button>
+                    <button class="tab" data-target="tactics">Tactics</button>
+                    <button class="tab" data-target="tournaments">Tournaments</button>
+                    <button class="tab" data-target="powerups">Powerups</button>
+                </div>
+
+                <form id="tacticForm" class="mt-3">
+                    <!-- Tab: Personnel -->
+                    <div class="tab-pane active" id="personnel">
+                        <div class="selection-group">
+                            <label class="group-label">Assign Bowler</label>
+                            <div class="bowler-cards">
+                                <label class="bowler-option">
+                                    <input type="radio" name="bowler" value="Rashid" required>
+                                    <div class="b-card ripple">
+                                        <img src="https://ui-avatars.com/api/?name=RK&background=e8f0fe&color=1a73e8" alt="RK">
+                                        <div class="b-info">
+                                            <strong>Rashid Khan</strong>
+                                            <span>1/24 (3.0)</span>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="bowler-option">
+                                    <input type="radio" name="bowler" value="Mohit">
+                                    <div class="b-card ripple">
+                                        <img src="https://ui-avatars.com/api/?name=MS&background=fce8e6&color=d93025" alt="MS">
+                                        <div class="b-info">
+                                            <strong>Mohit Sharma</strong>
+                                            <span>2/32 (3.0)</span>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="bowler-option">
+                                    <input type="radio" name="bowler" value="Umesh">
+                                    <div class="b-card ripple">
+                                        <img src="https://ui-avatars.com/api/?name=UY&background=e6f4ea&color=1e8e3e" alt="UY">
+                                        <div class="b-info">
+                                            <strong>Umesh Yadav</strong>
+                                            <span>1/40 (3.0)</span>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab: Tactics -->
+                    <div class="tab-pane" id="tactics">
+                        <div class="selection-group">
+                            <label class="group-label">Bowling Strategy</label>
+                            <div class="strategy-options">
+                                <label class="strat-chip">
+                                    <input type="radio" name="length" value="Yorkers" checked>
+                                    <span>Toe Crushers</span>
+                                </label>
+                                <label class="strat-chip">
+                                    <input type="radio" name="length" value="Bouncers">
+                                    <span>Head High</span>
+                                </label>
+                                <label class="strat-chip">
+                                    <input type="radio" name="length" value="Mix">
+                                    <span>Slower Dip</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab: Powerups -->
+                    <div class="tab-pane" id="powerups">
+                        <div class="booster-section">
+                            <label class="group-label">Available Boosters</label>
+                            <div class="booster-grid">
+                                <div class="booster locked">
+                                    <span class="material-icons-round">lock</span>
+                                    <small>Dhoni Mindset</small>
+                                </div>
+                                <div class="booster selectable ripple" data-booster="data-surge">
+                                    <span class="material-icons-round">bolt</span>
+                                    <small>Data Surge</small>
+                                </div>
+                                <div class="booster selectable ripple" data-booster="fan-pulse">
+                                    <span class="material-icons-round">group</span>
+                                    <small>Fan Pulse</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="submit-footer mt-4">
+                        <div class="timer-countdown">
+                            <span class="material-icons-round">schedule</span>
+                            <span id="countdown">45</span>s
+                        </div>
+                        <button type="submit" class="execute-btn" id="executeBtn">
+                            Lock Tactical Order
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Advanced Result Analysis -->
+            <div class="material-card result-card hidden" id="analysisReport">
+                <div class="result-header">
+                    <div class="status-icon success"><span class="material-icons-round">check_circle</span></div>
+                    <div class="result-titles">
+                        <h2>Order Executed</h2>
+                        <p>Analyzing Match Merit...</p>
+                    </div>
+                    <div class="merit-points" id="gainedPts">+0</div>
+                </div>
+
+                <div class="analysis-grid">
+                    <div class="analysis-box">
+                        <h4>Captain's Choice</h4>
+                        <div class="compare-row">
+                            <span class="material-icons-round">person</span>
+                            <span id="resCapBowler">Bumrah</span>
+                        </div>
+                        <div class="compare-row">
+                            <span class="material-icons-round">sports_cricket</span>
+                            <span id="resCapLength">Wide Yorkers</span>
+                        </div>
+                        <!-- Mini Pitch Map -->
+                        <div class="mini-pitch">
+                            <div class="p-spot captain-spot" style="top: 85%; left: 80%;"></div>
+                        </div>
+                    </div>
+                    <div class="analysis-box your-box">
+                        <h4>Your Tactical Merit</h4>
+                        <p id="terminalOutput">Calculating...</p>
+                        <!-- Mini Pitch Map User -->
+                        <div class="mini-pitch">
+                            <div class="p-spot user-spot" id="userPitchSpot"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="crowd-pulse">
+                    <label>Crowd Consensus</label>
+                    <div class="pulse-bar">
+                        <div class="segment matching" style="width: 65%">Matches Cap (65%)</div>
+                        <div class="segment other" style="width: 35%">Risky (35%)</div>
+                    </div>
+                </div>
+
+                <button class="next-step-btn" id="nextOverBtn">Next Delivery <span class="material-icons-round">arrow_forward</span></button>
+            </div>
+        </section>
+
+        <!-- RIGHT: SOCIAL & RANKINGS -->
+        <aside class="social-panel">
+            <div class="material-card leaderboard-card">
+                <div class="card-header">
+                    <span class="material-icons-round">emoji_events</span>
+                    <h3>Elite Tacticians</h3>
+                </div>
+                <div class="leaderboard-list" id="lbList">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Achievement / Progress -->
+            <div class="material-card progress-card mt-3">
+                <div class="card-header">
+                    <span class="material-icons-round">military_tech</span>
+                    <h3>Your Progress</h3>
+                </div>
+                <div class="rank-badge">
+                    <span class="material-icons-round">shield</span>
+                    <div class="rank-info">
+                        <strong>Grand Master</strong>
+                        <p>Top 2% in India</p>
+                    </div>
+                </div>
+                <div class="xp-bar mt-3">
+                    <div class="xp-fill" style="width: 85%"></div>
+                    <small>850 / 1000 XP to Level 13</small>
+                </div>
+            </div>
+
+            <!-- Live Feed / Notifications -->
+            <div class="material-card notification-card mt-3">
+                <div class="card-header">
+                    <span class="material-icons-round">notifications_active</span>
+                    <h3>Tactical Alerts</h3>
+                </div>
+                <div class="notification-list">
+                    <div class="notif">
+                        <span class="material-icons-round info">info</span>
+                        <p>Bumrah's energy levels dropping. Consider a rotation.</p>
+                    </div>
+                    <div class="notif">
+                        <span class="material-icons-round alert">warning</span>
+                        <p>Dhoni targeting the Leg-Side. Adjust field!</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+    </main>
+
+    <script src="js/app.js"></script>
+    <!-- DRS Third Umpire Overlay (Ultimate Simulation) -->
+    <div id="drsOverlay" class="drs-overlay hidden">
+        <div class="drs-screen">
+            <div class="drs-header">
+                <span class="material-icons-round">settings_remote</span>
+                <h2>THIRD UMPIRE REVIEW</h2>
+                <div class="drs-timer">00:15</div>
+            </div>
+            <div class="drs-viz-grid">
+                <div class="ultra-edge">
+                    <div class="waveform"></div>
+                    <label>ULTRA-EDGE</label>
+                </div>
+                <div class="ball-track">
+                    <div class="hawk-eye">
+                        <div class="ball-path"></div>
+                        <div class="stump-line"></div>
+                    </div>
+                    <label>BALL TRACKING</label>
+                </div>
+            </div>
+            <div class="drs-decision" id="drsDecision">WAITING...</div>
+        </div>
+    </div>
+
+    <!-- Full Squad Drawer -->
+    <div id="squadDrawer" class="squad-drawer hidden">
+        <div class="drawer-header">
+            <h3>GT vs SRH Full Squads</h3>
+            <button onclick="toggleSquad()"><span class="material-icons-round">close</span></button>
+        </div>
+        <div class="squad-grid" id="fullSquadGrid">
+            <!-- Populated by JS -->
+        </div>
+    </div>
+</html>
