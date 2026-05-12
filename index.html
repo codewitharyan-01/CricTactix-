@@ -12,10 +12,10 @@
     <!-- CricketData.org Live Widget -->
     <script src="https://cdorgapi.b-cdn.net/widgets/matchlist.js"></script>
 
-    <Style>
-    
-    
-    :root {
+    <style>
+
+
+        :root {
     --google-blue: #1a73e8;
     --google-red: #ea4335;
     --google-yellow: #fbbc04;
@@ -35,34 +35,9 @@
 
 body.pro-mode {
     font-family: 'Inter', sans-serif;
-    background: #0a192f;
-    background-image: 
-        radial-gradient(at 0% 0%, hsla(210,100%,10%,1) 0, transparent 50%), 
-        radial-gradient(at 50% 0%, hsla(220,100%,15%,1) 0, transparent 50%), 
-        radial-gradient(at 100% 0%, hsla(210,100%,10%,1) 0, transparent 50%);
-    background-attachment: fixed;
-    color: #fff;
+    color: var(--text-dark);
     -webkit-font-smoothing: antialiased;
 }
-
-/* Glassmorphism Refinement */
-.glass-card {
-    background: rgba(255, 255, 255, 0.03) !important;
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-/* Neural Insight Styling */
-.insight-text { font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.8); font-style: italic; }
-.insight-progress { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; }
-.insight-bar { height: 100%; background: var(--google-blue); box-shadow: 0 0 10px var(--google-blue); border-radius: 2px; }
-
-/* Social Feed Styling */
-.social-feed { display: flex; flex-direction: column; gap: 15px; }
-.social-post { display: flex; gap: 12px; padding: 12px; background: rgba(255,255,255,0.02); border-radius: 12px; }
-.social-post img { width: 32px; height: 32px; border-radius: 50%; }
-.post-content strong { font-size: 12px; color: var(--google-blue); display: block; }
-.post-content p { font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 4px; }
 
 h1, h2, h3, h4, strong { font-family: 'Outfit', sans-serif; }
 
@@ -476,14 +451,10 @@ h1, h2, h3, h4, strong { font-family: 'Outfit', sans-serif; }
 .header-score { color: #fbbc04; font-family: 'JetBrains Mono', monospace; font-weight: 800; margin-left: 10px; font-size: 16px; text-shadow: 0 0 10px rgba(251,188,4,0.4); }
 .hero-banner img { filter: brightness(0.8) contrast(1.2); }
 
-    </Style>
+    </style>
 
-
-        <script>
-
-
-
-        document.addEventListener('DOMContentLoaded', () => {
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
     // State Management
     let state = {
         currentScore: 2450,
@@ -646,34 +617,6 @@ function updateMasterUI(runs, wkts, overs) {
 
     // Update Commentary
     updateCommentary(runsInt, wktsInt, overs);
-
-    // AI INSIGHT & SOCIAL FEED UPGRADES
-    const insights = [
-        "GT's defensive field placement is successfully choking the run rate.",
-        "Neural models detect high wicket probability in the next 12 balls.",
-        "SRH batters are showing 45% increased aggression against spin.",
-        "Tactical Merits: GT has 88% synchronization with actual captain moves."
-    ];
-    const aiText = document.getElementById('aiInsight');
-    if (aiText) aiText.textContent = insights[Math.floor(Math.random() * insights.length)];
-
-    // Simulate Social Pulse
-    const pulseHub = document.getElementById('matchPulse');
-    if (pulseHub) {
-        const users = ["@CricketGuru", "@IPL_Stats", "@FanZone", "@GT_Army"];
-        const comments = ["What a delivery!", "GT is dominating the powerplay.", "Can SRH chase this down?", "Gill's captaincy is top notch today!"];
-        const newPost = document.createElement('div');
-        newPost.className = 'social-post';
-        newPost.innerHTML = `
-            <img src="https://ui-avatars.com/api/?name=${users[Math.floor(Math.random()*4)]}&background=random&color=fff" alt="Avatar">
-            <div class="post-content">
-                <strong>${users[Math.floor(Math.random()*4)]}</strong>
-                <p>${comments[Math.floor(Math.random()*4)]}</p>
-            </div>
-        `;
-        pulseHub.prepend(newPost);
-        if (pulseHub.children.length > 5) pulseHub.lastElementChild.remove();
-    }
 }
 
 function updateGlobalScoreboard(data) {
@@ -1101,7 +1044,7 @@ function updateCommentary(runs, wkts, overs) {
     });
 });
 
-        </script>
+    </script>
 </head>
 <body class="pro-mode">
     
@@ -1322,34 +1265,15 @@ function updateCommentary(runs, wkts, overs) {
                 </div>
             </div>
 
-            <!-- Neural Insight Engine (New) -->
-            <div class="material-card insight-card mt-3 glass-card">
+            <!-- Live Commentary Stream (New) -->
+            <div class="material-card comms-card mt-3">
                 <div class="card-header">
-                    <span class="material-icons-round">psychology</span>
-                    <h3>Neural Tactical Insight</h3>
+                    <span class="material-icons-round">comment</span>
+                    <h3>Live Commentary</h3>
                 </div>
-                <div id="aiInsight" class="insight-text">
-                    Detecting patterns... GT's high-pressure bowling is forcing SRH into a 65% risk-profile.
-                </div>
-                <div class="insight-progress mt-2">
-                    <div class="insight-bar" style="width: 88%;"></div>
-                </div>
-            </div>
-
-            <!-- Match Pulse: Social Feed (New) -->
-            <div class="material-card social-card mt-3 glass-card">
-                <div class="card-header">
-                    <span class="material-icons-round">rss_feed</span>
-                    <h3>Match Pulse</h3>
-                </div>
-                <div class="social-feed" id="matchPulse">
-                    <div class="social-post">
-                        <img src="https://ui-avatars.com/api/?name=CricExpert&background=1a73e8&color=fff" alt="Avatar">
-                        <div class="post-content">
-                            <strong>@CricExpert</strong>
-                            <p>GT's bowling change here is clinical. SRH struggling to find the gap.</p>
-                        </div>
-                    </div>
+                <div class="comms-stream" id="liveComms">
+                    <div class="comm-item">Welcome to the Live Tactical Hub for GT vs SRH.</div>
+                    <div class="comm-item">Waiting for next ball update from Ahmedabad...</div>
                 </div>
             </div>
         </aside>
